@@ -62,6 +62,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   top: 0; left: 0; right: 0;
   z-index: 1000;
   background: transparent;
+  /* iPhone notch / 안드로이드 상단 영역 안전지대 */
+  padding-top: env(safe-area-inset-top);
   transition: background-color .25s ease, box-shadow .25s ease, padding .25s ease;
 }
 .header__inner {
@@ -154,10 +156,12 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 /* Header scrolled state */
 .header.is-scrolled {
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 2px 14px rgba(0,0,0,0.05);
+  /* 본문 라이트 톤(--gray-100)과 자연스럽게 이어지는 배경 */
+  background: rgba(246, 248, 245, 0.96);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
 }
 .header.is-scrolled .header__logo { color: var(--dark); }
 .header.is-scrolled .nav__link { color: var(--gray-900); }
@@ -186,13 +190,13 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transform: scale(1.08);
-  transition: opacity 1.4s ease, transform 7s ease-out;
+  transform: scale(1.06);
+  transition: opacity .9s ease, transform 4s ease-out;
   will-change: opacity, transform;
 }
 .hero__slide.is-active {
   opacity: 1;
-  transform: scale(1.15);
+  transform: scale(1.12);
 }
 .hero__dots {
   position: absolute;
@@ -914,12 +918,16 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 @media (max-width: 720px) {
   html { scroll-padding-top: 64px; }
-  .header__inner { height: 64px; }
+  .header__inner { height: 60px; }
+  .logo-mark { width: 40px; height: 40px; }
   .nav {
     position: fixed;
-    inset: 64px 0 auto 0;
-    background: #fff;
-    box-shadow: var(--shadow-md);
+    top: calc(60px + env(safe-area-inset-top));
+    left: 0; right: 0;
+    background: rgba(246, 248, 245, 0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
     transform: translateY(-110%);
     transition: transform .3s ease;
   }
@@ -935,6 +943,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
     color: var(--gray-900);
   }
   .nav__link::after { display: none; }
+  .nav__link.is-active { background: rgba(141, 198, 63, 0.12); }
   .nav-toggle { display: block; }
   .header__logo { color: #fff; }
   .header.is-scrolled .header__logo { color: var(--dark); }

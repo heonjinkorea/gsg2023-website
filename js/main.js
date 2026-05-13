@@ -14,14 +14,21 @@
   const $  = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-  /* ---------- 1) 헤더 스크롤 상태 ---------- */
+  /* ---------- 1) 헤더 스크롤 상태 + 모바일 status bar 색상 ---------- */
   const header = $('#header');
   const toTop  = $('#toTop');
+  const themeColor = $('#themeColor');
+  const COLOR_HERO    = '#1f3315'; // hero 어두운 톤
+  const COLOR_SCROLL  = '#f6f8f5'; // 라이트 톤 (헤더 스크롤 상태)
 
   function onScroll() {
     const y = window.scrollY;
-    header.classList.toggle('is-scrolled', y > 60);
+    const scrolled = y > 60;
+    header.classList.toggle('is-scrolled', scrolled);
     toTop.classList.toggle('is-show', y > 400);
+    if (themeColor) {
+      themeColor.setAttribute('content', scrolled ? COLOR_SCROLL : COLOR_HERO);
+    }
     updateActiveNav();
   }
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -104,7 +111,7 @@
   /* ---------- 6) Hero 슬라이더 ---------- */
   const slides = $$('.hero__slide');
   const dots   = $$('.hero__dot');
-  const SLIDE_INTERVAL = 5000;
+  const SLIDE_INTERVAL = 3000;
   let slideIdx = 0;
   let slideTimer = null;
 
